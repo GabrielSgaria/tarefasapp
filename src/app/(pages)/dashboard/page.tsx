@@ -1,13 +1,10 @@
 
 import { authOptions } from "@/app/lib/auth";
 import { FormTarefa } from "@/components/form-tarefa";
-import { TextArea } from "@/components/text-area";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { useState } from "react";
 import { FaTrashCan } from "react-icons/fa6";
 import { FiShare2 } from "react-icons/fi";
-
 
 
 async function getUserSession() {
@@ -21,13 +18,14 @@ export default async function Dashboard() {
   if (!session) {
     redirect("/");
   }
+ 
   return (
     <div className="w-full h-full">
       <main>
         <section className="bg-zinc-950 w-full flex items-center justify-center ">
           <div className="max-w-[1024px] w-full px-4 pb-7 mt-14">
             <h1 className="text-zinc-50 mb-2">Qual sua tarefa?</h1>
-            <FormTarefa />
+            <FormTarefa userEmail={session?.user?.email}  />
           </div>
         </section>
 

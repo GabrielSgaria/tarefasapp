@@ -3,9 +3,6 @@
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { FiLoader, FiLock, FiLogOut } from "react-icons/fi";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
 
 export function Header() {
   const { status, data } = useSession();
@@ -67,6 +64,7 @@ export function Header() {
               <FiLogOut className="size-4 sm:size-5" />
             </button>
           </div>
+          
         )}
       </section>
     </header>

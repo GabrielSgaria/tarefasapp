@@ -1,17 +1,40 @@
 "use client";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { TextArea } from "./text-area";
+import { db } from '../services/firebaseConnection'
+import {addDoc, collection} from 'firebase/firestore'
 
-export function FormTarefa() {
+
+
+export function FormTarefa({ userEmail }: { userEmail:  string | null | undefined }) {
   const [input, setInput] = useState("");
   const [publicTask, setPublicTask] = useState(false);
 
   function handleChangePublic(event: ChangeEvent<HTMLInputElement>) {
     setPublicTask(event.target.checked);
   }
+  async function handleRegisterTask(event: FormEvent) {
+    event.preventDefault();
+
+    if (input === "" || userEmail == null) return;
+  
+    try {
+      await addDoc(collection(db, "tarefas"), {
+        tarefa: input,
+        created: new Date(),
+        user: userEmail,
+        public: publicTask
+      })
+
+      setInput(" ")
+      setPublicTask(false)
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   return (
-    <form action="">
+    <form onSubmit={handleRegisterTask}>
       <TextArea
         placeholder="Digite qual sua tarefa..."
         value={input}
