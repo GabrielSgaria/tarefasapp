@@ -1,12 +1,17 @@
 "use client";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { TextArea } from "./text-area";
-import { db } from '../services/firebaseConnection'
-import {addDoc, collection} from 'firebase/firestore'
+import { db } from "../services/firebaseConnection";
+import {
+  addDoc,
+  collection,
+} from "firebase/firestore";
 
-
-
-export function FormTarefa({ userEmail }: { userEmail:  string | null | undefined }) {
+export function FormTarefa({
+  userEmail,
+}: {
+  userEmail: string | null | undefined;
+}) {
   const [input, setInput] = useState("");
   const [publicTask, setPublicTask] = useState(false);
 
@@ -17,19 +22,19 @@ export function FormTarefa({ userEmail }: { userEmail:  string | null | undefine
     event.preventDefault();
 
     if (input === "" || userEmail == null) return;
-  
+
     try {
       await addDoc(collection(db, "tarefas"), {
         tarefa: input,
         created: new Date(),
         user: userEmail,
-        public: publicTask
-      })
+        public: publicTask,
+      });
 
-      setInput(" ")
-      setPublicTask(false)
-    }catch(err){
-      console.log(err)
+      setInput(" ");
+      setPublicTask(false);
+    } catch (err) {
+      console.log(err);
     }
   }
 
