@@ -35,5 +35,7 @@ export default async function Dashboard() {
         </section>
       </main>
     </div>
+    
   );
+
 }
