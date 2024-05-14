@@ -1,7 +1,7 @@
 'use client'
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { TextArea } from "./text-area";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/services/firebaseConnection";
 import { BiTrash } from "react-icons/bi";
 
@@ -77,6 +77,20 @@ export function FormComment({ sessionEmail, sessionName, idTask }: FoFormComment
         fetchComments();
     }, [idTask]);
 
+    async function handleDeleteComment(id: string) {
+        try {
+            const docRef = doc(db, "comments", id)
+            await deleteDoc(docRef);
+
+            const deletComment = comments.filter((item) => item.id !== id)
+
+            setComments(deletComment)
+            alert("DELETADO")
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const [input, setInput] = useState("");
     return (
         <div className="w-full">
@@ -107,7 +121,7 @@ export function FormComment({ sessionEmail, sessionName, idTask }: FoFormComment
                         <div className="flex items-center">
                             <label className="bg-zinc-200 py-[4px] px-[8px] mr-2 rounded-xl">{item.name}</label>
                             {item.user === sessionEmail && (
-                                <button className="border-0 bg-transparent cursor-pointer">
+                                <button className="border-0 bg-transparent cursor-pointer" onClick={() => handleDeleteComment(item.id)}>
                                     <BiTrash size={18} color="red" />
                                 </button>
                             )}
